@@ -18,7 +18,7 @@ import lombok.ToString;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(access = AccessLevel.PRIVATE)
-public class ArticleSummaryDto {
+public class WeekArticleSummaryDto {
 
 	@Schema(description = "아티클ID")
 	private Long articleId;
@@ -38,18 +38,22 @@ public class ArticleSummaryDto {
 	@Schema(description = "북마크 여부")
 	private Boolean isMarked;
 
+	@Schema(description = "오늘의 아티클 여부")
+	private Boolean isTodayArticle;
+
 	@Schema(description = "아티클 태그정보")
 	private List<String> tags;
 
-	public static ArticleSummaryDto of(Article article, ArticleContent content, List<String> tag,
-		boolean isMarked) {
-		return ArticleSummaryDto.builder()
+	public static WeekArticleSummaryDto of(Article article, ArticleContent content, List<String> tag,
+		boolean isMarked, boolean isTodayArticle) {
+		return WeekArticleSummaryDto.builder()
 			.articleId(article.getId())
 			.title(article.getTitle())
 			.mainImageUrl(article.getMainImageUrl())
 			.requiredTime(article.getRequiredTime())
 			.firstBodyContent(content.getContent())
 			.isMarked(isMarked)
+			.isTodayArticle(isTodayArticle)
 			.tags(tag)
 			.build();
 	}

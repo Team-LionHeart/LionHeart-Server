@@ -19,6 +19,8 @@ import com.chiwawa.lionheart.api.service.article.dto.response.ArticleDetailRespo
 import com.chiwawa.lionheart.api.service.article.dto.response.ArticleSummaryDto;
 import com.chiwawa.lionheart.api.service.article.dto.response.ArticleSummaryResponse;
 import com.chiwawa.lionheart.api.service.article.dto.response.TodayArticleResponse;
+import com.chiwawa.lionheart.api.service.article.dto.response.WeekArticleSummaryDto;
+import com.chiwawa.lionheart.api.service.article.dto.response.WeekArticleSummaryResponse;
 import com.chiwawa.lionheart.api.service.challenge.ChallengeService;
 import com.chiwawa.lionheart.api.service.member.MemberServiceUtils;
 import com.chiwawa.lionheart.common.dto.WeekAndDay;
@@ -63,12 +65,14 @@ public class ArticleRetrieveService {
 		return TodayArticleResponse.of(article, member.getOnboarding(), weekAndDay, editorNoteContent);
 	}
 
-	public ArticleSummaryResponse findArticlesByWeekAndMemberId(Long memberId, short week) {
+	public WeekArticleSummaryResponse findArticlesByWeekAndMemberId(Long memberId, short week) {
+		Member member = MemberServiceUtils.findMemberById(memberRepository, memberId);
+		WeekAndDay weekAndDay = MemberServiceUtils.findMemberWeekAndDay(member);
 
-		List<ArticleSummaryDto> weekArticles = formatSummaryArticleDtos(memberId,
+		List<WeekArticleSummaryDto> weekArticles = formatWeekSummaryArticleDtos(weekAndDay, memberId,
 			articleRepository.findOrderedArticlesByWeek(week));
 
-		return ArticleSummaryResponse.of(weekArticles);
+		return WeekArticleSummaryResponse.of(weekArticles);
 
 	}
 
@@ -112,5 +116,25 @@ public class ArticleRetrieveService {
 		List<String> articleTags = ArticleTagServiceUtils.findArticleTagsByArticle(article);
 
 		return ArticleSummaryDto.of(article, content, articleTags, bookmark.isPresent());
+	}
+
+	private List<WeekArticleSummaryDto> formatWeekSummaryArticleDtos(WeekAndDay memberWeekAndDay, Long memberId,
+		List<Article> articles) {
+		return articles
+			.stream()
+			.map(article -> formatWeekSummaryArticleDto(article, memberId,
+				memberWeekAndDay.equals(WeekAndDay.of(article.getWeek(), article.getDay()))))
+			.collect(Collectors.toList());
+	}
+
+	private WeekArticleSummaryDto formatWeekSummaryArticleDto(Article article, Long memberId, boolean isTodayArticle) {
+		// TODO: 전체 조회해서 한번에 처리하도록 수정
+		Optional<ArticleBookmark> bookmark = articleBookmarkRepository.findArticleBookmarkByMemberAndArticle(
+			findMemberById(memberRepository, memberId), article);
+
+		ArticleContent content = ArticleContentServiceUtils.findArticleFirstBodyByArticle(article);
+		List<String> articleTags = ArticleTagServiceUtils.findArticleTagsByArticle(article);
+
+		return WeekArticleSummaryDto.of(article, content, articleTags, bookmark.isPresent(), isTodayArticle);
 	}
 }
