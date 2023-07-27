@@ -12,12 +12,23 @@
         </encoder>
     </appender>
 
-    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="API-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <encoder>
             <pattern>${FILE_LOG_PATTERN}</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>./log/%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>/home/ubuntu/api-server/logs/%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="NOTIFICATION-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>/home/ubuntu/notification-server/logs/%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxFileSize>100MB</maxFileSize>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
@@ -25,22 +36,33 @@
 
 
     <springProfile name="local">
-        <logger name="com.chiwawa.lionheart" level="TRACE" />
         <root level="INFO">
             <appender-ref ref="CONSOLE" />
         </root>
+        <logger name="com.chiwawa.lionheart" level="TRACE" />
+
     </springProfile>
     <springProfile name="dev">
         <root level="INFO">
             <appender-ref ref="CONSOLE" />
-            <appender-ref ref="FILE" />
         </root>
+        <logger name="com.chiwawa.lionheart.api" level="INFO">
+            <appender-ref ref="API-FILE"/>
+        </logger>
+        <logger name="com.chiwawa.lionheart.notification" level="INFO">
+            <appender-ref ref="NOTIFICATION-FILE"/>
+        </logger>
     </springProfile>
     <springProfile name="prod">
         <root level="INFO">
             <appender-ref ref="CONSOLE" />
-            <appender-ref ref="FILE" />
         </root>
+        <logger name="com.chiwawa.lionheart.api" level="INFO">
+            <appender-ref ref="API-FILE"/>
+        </logger>
+        <logger name="com.chiwawa.lionheart.notification" level="INFO">
+            <appender-ref ref="NOTIFICATION-FILE"/>
+        </logger>
     </springProfile>
 
 </configuration>
