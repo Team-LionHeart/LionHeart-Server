@@ -25,7 +25,7 @@
 
 
     <springProfile name="local">
-        <logger name="com.chiwawa.lionheart" level="DEBUG" />
+        <logger name="com.chiwawa.lionheart" level="TRACE" />
         <root level="INFO">
             <appender-ref ref="CONSOLE" />
         </root>
