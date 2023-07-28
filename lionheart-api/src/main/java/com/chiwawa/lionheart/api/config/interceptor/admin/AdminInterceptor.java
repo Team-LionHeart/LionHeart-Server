@@ -27,7 +27,7 @@ public class AdminInterceptor implements HandlerInterceptor {
 		if (admin.isEmpty()) {
 			return true;
 		}
-		adminCheckHandler.validateMemberRole(request);
-		return true;
+
+		return adminCheckHandler.hasRole(request);
 	}
 }

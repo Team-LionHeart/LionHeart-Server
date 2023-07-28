@@ -40,8 +40,8 @@
             <appender-ref ref="CONSOLE" />
         </root>
         <logger name="com.chiwawa.lionheart" level="TRACE" />
-
     </springProfile>
+
     <springProfile name="dev">
         <root level="INFO">
             <appender-ref ref="CONSOLE" />
@@ -53,6 +53,7 @@
             <appender-ref ref="NOTIFICATION-FILE"/>
         </logger>
     </springProfile>
+
     <springProfile name="prod">
         <root level="INFO">
             <appender-ref ref="CONSOLE" />
