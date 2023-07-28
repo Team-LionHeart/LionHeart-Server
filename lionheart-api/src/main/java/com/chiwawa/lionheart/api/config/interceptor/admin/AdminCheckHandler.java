@@ -24,7 +24,6 @@ public class AdminCheckHandler {
 	private final JwtUtils jwtUtils;
 	private final MemberRepository memberRepository;
 
-	//TODO: hasRole로 메서드명 변경하고 hasAdminAuthority를 return하도록 변경하는건 어떨까?
 	public boolean hasRole(HttpServletRequest request) {
 		String bearerToken = request.getHeader("Authorization");
 		if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
@@ -34,7 +33,6 @@ public class AdminCheckHandler {
 		throw new ForbiddenException(ADMIN_ERROR_MESSAGE, FORBIDDEN_ADMIN_EXCEPTION);
 	}
 
-	//TODO: null 사용하지 않고 Optional로 변하면 어떨까
 	private boolean hasAdminAuthority(String accessToken) {
 		if (jwtUtils.validateToken(accessToken)) {
 			Long memberId = jwtUtils.getMemberIdFromJwt(accessToken);
