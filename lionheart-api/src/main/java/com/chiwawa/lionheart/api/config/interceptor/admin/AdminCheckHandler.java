@@ -24,13 +24,11 @@ public class AdminCheckHandler {
 	private final JwtUtils jwtUtils;
 	private final MemberRepository memberRepository;
 
-	public void validateMemberRole(HttpServletRequest request) {
+	public boolean hasRole(HttpServletRequest request) {
 		String bearerToken = request.getHeader("Authorization");
 		if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
 			String accessToken = bearerToken.substring("Bearer ".length());
-			if (hasAdminAuthority(accessToken)) {
-				return;
-			}
+			return hasAdminAuthority(accessToken);
 		}
 		throw new ForbiddenException(ADMIN_ERROR_MESSAGE, FORBIDDEN_ADMIN_EXCEPTION);
 	}
