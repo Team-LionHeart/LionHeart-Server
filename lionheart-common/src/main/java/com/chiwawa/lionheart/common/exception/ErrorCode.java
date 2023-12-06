@@ -34,8 +34,6 @@ public enum ErrorCode {
 	CONFLICT_MEMBER_EXCEPTION("C002", "이미 해당 계정으로 회원가입하셨습니다.\n로그인 해주세요."),
 	CONFLICT_BOOKMARK_EXCEPTION("C003", "요청과 동일한 북마크 상태 입니다."),
 
-	// Unsupported Media Type Exception
-
 	// Internal Server Exception
 	INTERNAL_SERVER_EXCEPTION("I001", "서버 내부에서 에러가 발생하였습니다."),
 
