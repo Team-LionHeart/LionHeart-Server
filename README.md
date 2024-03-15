@@ -40,5 +40,5 @@
 
 <br>
 
-## 📃 API Docs
-[API Document](https://pgmjun.notion.site/API-60f3cd9c29f243d392b2d8d419898b75?pvs=4)
+## 📃 API Docs(Swagger)
+[API Document](http://3.34.174.158/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config)
